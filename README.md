@@ -1,5 +1,5 @@
 # CHAT SERVER PYTHON FLASK
-## `PYTHON FLASK` + `BOOTSTRAP 5` + `SQL WORKBENCH`
+## `PYTHON FLASK` + `SQL WORKBENCH`
 
 ## Recommend: Python `3.10` + SQL Workbench `8.0.31` + IDE `PYCHARM`
 
