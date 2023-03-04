@@ -11,7 +11,7 @@ class BaseModel(db.Model):
 class User(BaseModel, UserMixin):
     email = Column(String(50), nullable=False)
     fullname = Column(String(50), nullable=False)
-    image = Column(String(100))
+    avatar = Column(String(100))
 
     def __str__(self):
         return self.fullname

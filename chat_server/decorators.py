@@ -12,3 +12,14 @@ def login_required(f):
         return f(*args, **kwargs)
 
     return check
+
+
+def not_auth(f):
+    @wraps(f)
+    def check(*args, **kwargs):
+        if current_user.is_authenticated:
+            return redirect('/')
+
+        return f(*args, **kwargs)
+
+    return check
