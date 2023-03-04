@@ -19,5 +19,6 @@
 3. Change to new branch `git checkout feature-<new-branch>`\
     Example: `git checkout feature-login`
 4. Do something ...
-5. Commit & push to new branch `git push origin feature-<new-branch>`\
+5. Export requirements.txt `pip freeze > requirements.txt`
+6. Commit & push to new branch `git push origin feature-<new-branch>`\
     Example: `git push origin feature-login`
