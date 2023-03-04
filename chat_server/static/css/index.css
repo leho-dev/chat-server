@@ -1,0 +1,82 @@
+.app {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    min-height: 100vh;
+    gap: 40px;
+}
+
+@keyframes logoK {
+    from {
+        transform: translateY(-200px);
+    } to {
+        transform: translateY(0px);
+    }
+}
+
+.logo {
+    width: 300px;
+    transition: all linear 0.5s;
+    animation: logoK linear 0.5s;
+}
+
+.logo img {
+    width: 100%;
+}
+
+@keyframes btnLoginGoogleK {
+    0% {
+        transform: scale(0);
+    }
+    50% {
+        transform: scale(0.4);
+    }
+    75% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.btn-login-with-google {
+    outline: none;
+    border: none;
+    transition: all linear 0.25s;
+    animation: btnLoginGoogleK linear 0.75s;
+    border-radius: 12px;
+}
+
+.btn-login-with-google a {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 4px 20px;
+    border-radius: 12px;
+    background: var(--white-color);
+    font-size: 1.6rem;
+    box-shadow: var(--shadow);
+    color: var(--black-color);
+}
+
+.btn-login-with-google a:hover {
+    transition: all linear 0.25s;
+    cursor: pointer;
+    background: var(--gray-color);
+}
+
+.btn-icon {
+    width: 40px;
+    height: 40px;
+
+}
+
+.btn-icon img {
+    width: 100%
+}
+
+.btn-content {
+
+}
