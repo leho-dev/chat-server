@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}OU Chat{% endblock %}
+    </title>
+    <link rel="icon" type="image/x-icon"
+          href="https://cdn-icons-png.flaticon.com/512/6463/6463383.png">
+    {{ moment.include_moment() }}
+    {{ moment.locale(language='vi') }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"
+            integrity="sha512-CryKbMe7sjSCDPl18jtJI5DR5jtkUWxPXWaLCst6QjH8wxDexfRJic2WRmRXmstr2Y8SxDDWuBO6CQC6IE4KTA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"
+            integrity="sha512-42PE0rd+wZ2hNXftlM78BSehIGzezNeQuzihiBCvUEB3CVxHvsShF86wBWwQORNxNINlBPuq7rG4WWhNiTVHFg=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <link href="{{ url_for('static', filename='css/base.css') }}" rel="stylesheet"/>
+    {% block css %}{% endblock %}
+    <script defer src="{{ url_for('static', filename='js/app.js') }}"></script>
+    {% block js %}{% endblock %}
+</head>
+<body>
+<div class="app">
+    {% block content required %}{% endblock %}
+</div>
+</body>
+</html>
