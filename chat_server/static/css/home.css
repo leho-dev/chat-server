@@ -1,6 +1,8 @@
 .header {
     height: var(--header-height);
     box-shadow: var(--shadow);
+    position: fixed;
+    inset: 0;
 }
 
 .header-wrap {
@@ -87,6 +89,11 @@
     font-weight: 500;
 }
 
+.header-right .btn-logout {
+    padding: 0px;
+    margin-left: 12px;
+}
+
 .header-right .btn-logout a {
     color: var(--black-color);
     text-decoration: none;
@@ -95,5 +102,25 @@
     display: block;
     padding: 4px 12px;
     border-radius: 4px;
+}
+
+.main {
+    height: 100vh;
+    padding-top: var(--header-height);
+}
+
+.main-wrap {
+    height: 100%;
+    display: flex;
+}
+
+.main-left {
+    width: 300px;
+    background: #ccc;
+}
+
+.main-right {
+    flex: 1;
+    box-shadow: 2px 0px 4px rgba(0,0,0,0.05);
 }
 
