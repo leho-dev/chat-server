@@ -1,0 +1,17 @@
+{
+  "web": {
+    "client_id": "600329203372-fs0vj8psbmv2g49jb88bdoti9jbsi3ed.apps.googleusercontent.com",
+    "project_id": "ou-chat-server",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_secret": "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",
+    "redirect_uris": [
+      "https://localhost:5001/callback",
+      "http://localhost:5001/callback"
+    ],
+    "javascript_origins": [
+      "https://localhost:5001"
+    ]
+  }
+}

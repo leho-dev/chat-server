@@ -1,5 +1,22 @@
 {% extends 'layout/base.html' %}
+{% block css %}
+<link href="{{ url_for('static', filename='css/index.css') }}" rel="stylesheet"/>
+{% endblock %}
 {% block title %}OU Chat | Login{% endblock %}
+
+
 {% block content %}
-<h1>Login Nè!</h1>
+<div class="logo">
+    <img src="{{ url_for('static', filename='img/hacker.png') }}" alt="logo">
+</div>
+<button class="btn-login-with-google">
+    <a href="/oauth">
+        <span class="btn-icon">
+        <img src="{{ url_for('static', filename='img/google.png') }}" alt="icon google">
+    </span>
+        <div class="btn-content">
+            Đăng nhập với Google
+        </div>
+    </a>
+</button>
 {% endblock %}
