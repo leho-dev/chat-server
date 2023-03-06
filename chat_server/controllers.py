@@ -19,11 +19,9 @@ def login_oauth():
 def oauth_callback():
     try:
         user_oauth = dao.get_user_oauth()
-        print(user_oauth)
         email = user_oauth['email']
         user = User.query.filter_by(email=email).first()
         if user is None:
-            import hashlib
             fullname = user_oauth['name']
             avatar = user_oauth['picture']
             user = User(fullname=fullname, email=email, avatar=avatar)

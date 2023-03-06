@@ -71,7 +71,6 @@
 }
 
 .header-right .user-profile__img {
-    overflow: hidden;
     width: calc(var(--header-height) - 12px);
 }
 
@@ -119,8 +118,111 @@
     background: #ccc;
 }
 
+.left-list {
+    list-style-type: none;
+
+}
+
+.left-item {
+    display: flex;
+    align-items: center;
+    padding: 6px 12px;
+    gap: 12px;
+    transition: all linear 0.25s;
+}
+
+.left-item:hover {
+    cursor: pointer;
+    background: #ddd;
+}
+
+.left-item.active {
+    background: linear-gradient(#ddd, #eee);
+}
+
+.left-item__avatar {
+    --width: 52px;
+    flex-shrink: 0;
+    width: var(--width);
+    overflow: hidden;
+}
+
+.left-item__avatar img {
+    border-radius: 50%;
+    border: 1px solid var(--black-color);
+    width: var(--width);
+    height: var(--width);
+    object-fit: cover;
+}
+
+.left-item__info {
+
+}
+
+.left-item__name {
+    font-size: 1.8rem;
+    font-weight: 500;
+}
+
+.left-item__last-mess {
+    font-size: 1.3rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-top: 4px;
+}
+
+.left-item__state .fa-solid.fa-circle-check {
+    display: none;
+}
+
+.left-item__state .fa-regular.fa-circle-check {
+    display: block;
+}
+
+.left-item__state.active .fa-solid.fa-circle-check {
+    display: block;
+}
+
+.left-item__state.active .fa-regular.fa-circle-check {
+    display: none;
+}
+
 .main-right {
     flex: 1;
     box-shadow: 2px 0px 4px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
 }
 
+.main-right__content {
+
+}
+
+.main-right__chat {
+    display: flex;
+    width: 100%;
+    margin-top: auto;
+    padding: 6xp 12px;
+    background: #ccc;
+    min-height: var(--chat-height);
+}
+
+.chat-input {
+    padding: 4px 12px;
+    font-size: 1.6rem;
+    flex: 1;
+    border: none;
+    outline: none;
+}
+
+.chat-send {
+    min-width: 60px;
+    border-radius: 0px;
+    transition: all linear 0.25s;
+}
+
+.chat-send:hover {
+    background: #ddd;
+}
