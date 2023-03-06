@@ -98,6 +98,7 @@
 .search-item__img img {
     object-fit: cover;
     width: 100%;
+    border: 1px solid var(--black-color);
 }
 
 .search-item__info {

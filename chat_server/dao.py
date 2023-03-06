@@ -1,6 +1,6 @@
 from flask import request
 import requests
-from chat_server import flow
+from chat_server import flow, db
 from chat_server.models import User
 from pip._vendor import cachecontrol
 import google.auth.transport.requests
@@ -28,3 +28,23 @@ def get_user_oauth():
         audience=os.getenv("OAUTH_CLIENT_ID")
     )
     return user_oauth
+
+
+def create_user(fullname, email, avatar):
+    user = User(fullname=fullname, email=email, avatar=avatar)
+    db.session.add(user)
+    db.session.commit()
+    return user
+
+
+def get_list_user_by_text(text):
+    filter_list = User.query.filter(User.fullname.contains(text) | User.email.__eq__(text))
+    user_list = []
+    for f in filter_list:
+        obj = {
+            'fullname': f.fullname,
+            'avatar': f.avatar,
+            'id': f.id
+        }
+        user_list.append(obj)
+    return user_list
