@@ -22,3 +22,5 @@
 5. Export requirements.txt `pip freeze > requirements.txt`
 6. Commit & push to new branch `git push origin feature-<new-branch>`\
     Example: `git push origin feature-login`
+    
+## `DO NOT PUSH IN MAIN BRANCH !!!`
