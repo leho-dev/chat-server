@@ -9,7 +9,7 @@
             <img src="{{ url_for('static', filename='img/hacker.png') }}" alt="logo"/>
         </div>
         <div class="header-search">
-            <input tabindex="1" type="text" name="search" class="search-input">
+            <input placeholder="Tìm tài khoản ..." tabindex="1" type="text" name="search" class="search-input">
             <div class="search-icon">
                 <i class="fa-regular fa-keyboard"></i>
             </div>
@@ -199,17 +199,7 @@
 
 </footer>
 
-<script>
-    const avtUser = document.querySelector('.user-profile__img img')
-
-    avtUser.src = avtUser.getAttribute("lazy-src");
-    avtUser.removeAttribute("lazy-src");
-
-
-
-
-
-
-
-</script>
+{% block js %}
+    <script defer src="{{ url_for('static', filename='js/home.js') }}"></script>
+{% endblock %}
 {% endblock %}

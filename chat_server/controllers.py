@@ -1,8 +1,7 @@
-from flask import render_template, redirect, session
+from flask import render_template, redirect, request
 from flask_login import login_user, logout_user
-
 from chat_server.decorators import login_required, not_auth
-from chat_server import flow, dao, db
+from chat_server import flow, dao
 from chat_server.models import User
 
 
@@ -24,9 +23,7 @@ def oauth_callback():
         if user is None:
             fullname = user_oauth['name']
             avatar = user_oauth['picture']
-            user = User(fullname=fullname, email=email, avatar=avatar)
-            db.session.add(user)
-            db.session.commit()
+            user = dao.create_user(fullname, email, avatar)
         login_user(user)
         return redirect('/')
     except:
@@ -38,7 +35,15 @@ def home():
     return render_template('home.html')
 
 
+def search_user():
+    data = request.get_json()
+    user_list = dao.get_list_user_by_text(text=data['text'])
+    return {
+        "status": 200,
+        "data": user_list
+    }
+
+
 def logout():
     logout_user()
     return redirect('/auth')
-

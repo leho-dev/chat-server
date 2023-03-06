@@ -1,7 +1,7 @@
 from chat_server import app, login, controllers, dao
 
 
-app.add_url_rule('/auth', 'login', controllers.login, methods=['get', 'post'])
+app.add_url_rule('/auth', 'login', controllers.login)
 app.add_url_rule('/oauth', 'login_oauth', controllers.login_oauth)
 app.add_url_rule('/callback', 'oauth_callback', controllers.oauth_callback)
 
@@ -9,6 +9,8 @@ app.add_url_rule('/logout', 'logout', controllers.logout)
 
 
 app.add_url_rule('/', 'home', controllers.home, methods=['get', 'post'])
+
+app.add_url_rule("/search_user", 'search_user', controllers.search_user, methods=['post'])
 
 
 @login.user_loader
