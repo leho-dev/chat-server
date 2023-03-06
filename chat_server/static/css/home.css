@@ -28,6 +28,7 @@
     display: flex;
     align-items: center;
     background: #ddd;
+    position: relative;
 }
 
 .search-input {
@@ -55,6 +56,56 @@
 .search-icon:hover {
     cursor: pointer;
     background: var(--gray-color);
+}
+
+.sub-search {
+    list-style-type: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    background: var(--white-color);
+    padding: 6px 0;
+    box-shadow: var(--shadow);
+    max-height: 190px;
+    overflow-y: scroll;
+    display: none;
+}
+
+.sub-search.active {
+    display: block;
+}
+
+.sub-search__item {
+    background: #ddd;
+    display: flex;
+    align-items: center;
+    padding: 4px 12px;
+}
+
+.sub-search__item:hover {
+    cursor: pointer;
+    background: var(--gray-color);
+}
+
+.search-item__img {
+    --width: 28px;
+    width: var(--width);
+    display: flex;
+    align-items: center;
+}
+
+.search-item__img img {
+    object-fit: cover;
+    width: 100%;
+}
+
+.search-item__info {
+
+}
+
+.search-item__name {
+    margin-left: 4px;
 }
 
 .header-right {
@@ -144,15 +195,18 @@
     --width: 52px;
     flex-shrink: 0;
     width: var(--width);
-    overflow: hidden;
 }
 
 .left-item__avatar img {
     border-radius: 50%;
-    border: 1px solid var(--black-color);
+    border: 4px solid transparent;
     width: var(--width);
     height: var(--width);
     object-fit: cover;
+}
+
+.left-item__avatar.active img {
+    border: 4px solid green;
 }
 
 .left-item__info {
@@ -196,8 +250,29 @@
     flex-direction: column;
 }
 
-.main-right__content {
+.main-right__conversation {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 12px;
+    overflow-y: scroll;
+    height: calc(100% - var(--chat-height));
+}
 
+.conversation-item {
+    padding: 4px 12px;
+    border-radius: 6px;
+    background: var(--gray-color);
+    width: fit-content;
+    font-size: 1.6rem;
+    max-width: 80%;
+}
+
+.conversation-item + .conversation-item {
+    margin-top: 4px;
+}
+
+.conversation-item.author {
+    margin-left: auto;
 }
 
 .main-right__chat {
