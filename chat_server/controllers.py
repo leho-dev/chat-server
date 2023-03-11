@@ -44,6 +44,11 @@ def search_user():
     }
 
 
+def get_list_receiver(u_id):
+    data = dao.get_list_receiver(u_id)
+    pass
+
+
 def logout():
     logout_user()
     return redirect('/auth')

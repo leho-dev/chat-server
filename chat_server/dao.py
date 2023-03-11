@@ -1,12 +1,13 @@
 from flask import request
 import requests
-from chat_server import flow, db
-from chat_server.models import User
+from chat_server import flow, db, app
+from chat_server.models import User, Message
 from pip._vendor import cachecontrol
 import google.auth.transport.requests
 from google.oauth2 import id_token
 import os
 from dotenv import load_dotenv
+from sqlalchemy import func, desc, asc, extract, and_, distinct
 
 load_dotenv()
 
@@ -48,3 +49,17 @@ def get_list_user_by_text(text):
         }
         user_list.append(obj)
     return user_list
+
+
+def get_list_receiver(u_id):
+    q = db.session.query(Message.content, Message.is_seen, User.id, User.fullname, User.avatar) \
+        .join(User, User.id.__eq__(Message.sender)).filter(Message.receiver.__eq__(u_id))\
+        .order_by(desc(Message.created_at))
+    user_list = []
+
+    return q.all()
+
+
+if __name__ == '__main__':
+    with app.app_context():
+        print(get_list_receiver(18))
