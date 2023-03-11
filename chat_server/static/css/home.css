@@ -51,6 +51,7 @@
     font-size: 1.6rem;
     border-radius:  0 var(--radius) var(--radius) 0;
     transition: all linear 0.25s;
+    p
 }
 
 .search-icon:hover {

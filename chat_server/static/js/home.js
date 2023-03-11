@@ -1,9 +1,6 @@
-const avtUser = document.querySelector('.user-profile__img img')
+
 const searchInp = document.querySelector('.search-input')
 const subSearch = document.querySelector('.sub-search')
-
-avtUser.src = avtUser.getAttribute("lazy-src");
-avtUser.removeAttribute("lazy-src");
 
 // debounce search
 let timerId
@@ -27,7 +24,7 @@ searchInp.oninput = (e) => {
                 "Content-type": "application/json"
             },
             body: JSON.stringify({
-                text: value
+                text: value.trim()
             })
         })
         .then(res => res.json())
@@ -37,9 +34,9 @@ searchInp.oninput = (e) => {
             if (res.length) {
                 const htmls = res.map(r => {
                     return `
-                        <li class="sub-search__item">
+                        <li data-id=${r.id} class="sub-search__item">
                             <div class="search-item__img">
-                                <img src=${r.avatar}
+                                <img referrerpolicy="no-referrer" src=${r.avatar}
                                      alt="user-avatar">
                             </div>
                             <div class="search-item__info">
@@ -60,4 +57,10 @@ searchInp.oninput = (e) => {
             console.log(err)
         })
     }, 500)
+}
+
+subSearch.onclick = e => {
+    const item = e.target.closest(".sub-search__item")
+    if (!item) return
+
 }
