@@ -46,7 +46,19 @@ def search_user():
 
 def get_list_receiver(u_id):
     data = dao.get_list_receiver(u_id)
-    pass
+    return {
+        "status": 200,
+        "data": data
+    }
+
+
+def add_conversation():
+    data = request.get_json()
+    conv = dao.create_conv_json(data['user_1'], data['user_2'])
+    return {
+        "status": 200,
+        "data": conv
+    }
 
 
 def logout():

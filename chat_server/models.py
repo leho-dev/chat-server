@@ -38,24 +38,29 @@ class Message(BaseModel):
 
 if __name__ == '__main__':
     with app.app_context():
-        db.create_all()
+        # db.create_all()
 
         # a = User(fullname='Nguyễn Văn A')
         # b = User(fullname="Lê B")
         # db.session.add_all([a, b])
         # db.session.commit()
 
-        c1 = Conversation()
-
-        # m1 = Message(content="Test 1", sender=18, receiver=19)
-        # m2 = Message(content="Rep Test 1", sender=19, receiver=18)
-        # m3 = Message(content="Test 2", sender=18, receiver=19)
-        # m4 = Message(content="Rep Test 2", sender=19, receiver=19)
-        # m5 = Message(content="Test 3", sender=20, receiver=18)
-        # m6 = Message(content="Test 4", sender=20, receiver=18)
-        # m7 = Message(content="Test 5", sender=21, receiver=18)
-        # m8 = Message(content="Test 6", sender=22, receiver=18)
-        # m9 = Message(content="Test 47", sender=20, receiver=18)
-        # db.session.add_all([m9])
+        # c1 = Conversation(user_1=1, user_2=2)
+        # c2 = Conversation(user_1=1, user_2=3)
+        # c3 = Conversation(user_1=2, user_2=3)
+        # db.session.add_all([c1, c2, c3])
         # db.session.commit()
+
+        # m1 = Message(content="Test 1", conversation_id=1, sender=1, receiver=2)
+        # m2 = Message(content="Rep Test 1", conversation_id=1, sender=2, receiver=1)
+        # m3 = Message(content="Test 2", conversation_id=1, sender=1, receiver=2)
+        # m4 = Message(content="Rep Test 2", conversation_id=1, sender=2, receiver=1)
+        # m5 = Message(content="Test 3", conversation_id=2, sender=1, receiver=3)
+        # m6 = Message(content="Test 4", conversation_id=2, sender=1, receiver=3)
+        # m7 = Message(content="Test 5", conversation_id=2, sender=1, receiver=3)
+        # m8 = Message(content="Test 6", conversation_id=2, sender=3, receiver=1)
+        # db.session.add_all([m1, m2, m3, m4, m5, m6, m7, m8])
+        # db.session.commit()
+
+        pass
 
