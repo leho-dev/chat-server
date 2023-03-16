@@ -1,6 +1,5 @@
 const searchInp = document.querySelector('.search-input')
 const subSearch = document.querySelector('.sub-search')
-const userId = document.querySelector('.user-profile').dataset.id.split("-")[1]
 const sidebar = document.querySelector('.left-list')
 const sideContent = document.querySelector('.main-right__conversation')
 const chatMain = document.querySelector('.main-right__chat')
@@ -17,7 +16,6 @@ fetch(SERVER_URL + "/get_list_receiver/" + userId, {
 })
     .then(res => res.json())
     .then(data => {
-        console.log(data)
         const htmls = data.data.map(r => {
             return `
             <li data-id="${r.c_id}" data-user="${r.id}" class="left-item">
@@ -232,9 +230,27 @@ chatMain.onsubmit = (e) => {
                 top: sideContent.scrollHeight,
                 behavior: 'smooth'
             })
+            socket.emit("send_message", res)
         }).catch(err => {
         console.log(err)
     })
 }
+
+socket.on("receive_message", data => {
+    if (sideContent.dataset.id == data.c_id && data.receiver == userId) {
+        const html = `
+        <div title="${data.created_at}" class="conversation-item ${data.sender == userId ? "author" : ""}">
+            ${data.content}
+        </div>
+    `
+        sideContent.innerHTML += html
+        sideContent.scroll({
+            top: sideContent.scrollHeight,
+            behavior:'smooth'
+        })
+    }
+})
+
+
 
 

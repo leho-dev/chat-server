@@ -9,11 +9,14 @@ import pathlib
 from flask_moment import Moment
 from google_auth_oauthlib.flow import Flow
 from dotenv import load_dotenv
+from flask_socketio import SocketIO
 
 
 load_dotenv()
 
 app = Flask(__name__)
+
+socket = SocketIO(app)
 
 app.secret_key = os.getenv('SECRET_KEY')
 
