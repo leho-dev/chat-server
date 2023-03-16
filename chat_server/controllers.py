@@ -69,6 +69,15 @@ def get_mess_conv(c_id):
     }
 
 
+def create_message():
+    data = request.get_json()
+    mess = dao.create_message_json(data['c_id'], data['s_id'], data['r_id'], data['content'])
+    return {
+        "status": 200,
+        "data": mess
+    }
+
+
 def logout():
     logout_user()
     return redirect('/auth')

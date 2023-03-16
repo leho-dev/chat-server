@@ -3,6 +3,10 @@ const subSearch = document.querySelector('.sub-search')
 const userId = document.querySelector('.user-profile').dataset.id.split("-")[1]
 const sidebar = document.querySelector('.left-list')
 const sideContent = document.querySelector('.main-right__conversation')
+const chatMain = document.querySelector('.main-right__chat')
+const chatInp = document.querySelector('.chat-input')
+
+let itemActiveSidebar = null
 
 // get sidebar
 fetch(SERVER_URL + "/get_list_receiver/" + userId, {
@@ -13,9 +17,10 @@ fetch(SERVER_URL + "/get_list_receiver/" + userId, {
 })
     .then(res => res.json())
     .then(data => {
+        console.log(data)
         const htmls = data.data.map(r => {
             return `
-            <li data-id="${r.c_id}" class="left-item">
+            <li data-id="${r.c_id}" data-user="${r.id}" class="left-item">
                 <div class="left-item__avatar">
                     <img src="${r.avatar}"
                          alt="user">
@@ -23,9 +28,6 @@ fetch(SERVER_URL + "/get_list_receiver/" + userId, {
                 <div class="left-item__info">
                     <div class="left-item__name">
                         ${r.fullname}
-                    </div>
-                    <div class="left-item__last-mess">
-                        ${r.last_mess}
                     </div>
                 </div>
             </li>
@@ -49,12 +51,17 @@ const get_mess_conv_data = async (c_id) => {
             const res = data.data
             const htmls = res.map(r => {
                 return `
-                    <div class="conversation-item ${r.sender == userId ? "author" : ""}">
+                    <div title="${r.created_at}" class="conversation-item ${r.sender == userId ? "author" : ""}">
                         ${r.content}
                     </div>
                 `
             }).join("")
+            sideContent.dataset.id = c_id
             sideContent.innerHTML = htmls
+            sideContent.scroll({
+                top: sideContent.scrollHeight,
+                behavior: 'smooth'
+            })
         })
 }
 
@@ -71,12 +78,13 @@ const activeSidebar = async (c_id, data) => {
             flag = 0
             item.classList.add('active')
             get_mess_conv_data(c_id)
+            itemActiveSidebar = c_id
         }
     })
 
     if (flag) {
         const html = `
-            <li data-id="${data.c_id}" class="left-item active">
+            <li data-id="${data.c_id}" data-user="${data.id}" class="left-item active">
                 <div class="left-item__avatar">
                     <img src="${data.avatar}"
                          alt="user">
@@ -85,24 +93,21 @@ const activeSidebar = async (c_id, data) => {
                     <div class="left-item__name">
                         ${data.fullname}
                     </div>
-                    <div class="left-item__last-mess">
-                        ${data.last_mess || ""}
-                    </div>
                 </div>
             </li>
         `
         sidebar.innerHTML += html
-        get_mess_conv_data(c_id)
+        await get_mess_conv_data(c_id)
     }
 
     subSearch.classList.remove('active')
 }
 
 // onlick sidebar
-sidebar.onclick = (e) => {
+sidebar.onclick = async (e) => {
     const item = e.target.closest('.left-item')
     if (item) {
-        activeSidebar(item.dataset.id)
+        await activeSidebar(item.dataset?.id)
     }
 }
 
@@ -185,10 +190,51 @@ subSearch.onclick = async e => {
             const res = data.data
             const c_id = res.c_id
             activeSidebar(c_id, res)
+            searchInp.value = ""
         }).catch(err => {
             console.log(err)
         })
 
+}
+
+// send message
+chatMain.onsubmit = (e) => {
+    e.preventDefault()
+    const value = chatInp.value
+    if (!value.trim() || !sideContent.dataset.id) return
+    if (value.length > 100) return
+    const receiver = document.querySelector(`.left-item[data-id='${sideContent.dataset.id}']`).dataset.user
+    fetch(SERVER_URL + "/create_message", {
+        method: 'POST',
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({
+            c_id: sideContent.dataset.id,
+            s_id: userId,
+            r_id: receiver,
+            content: value
+        })
+    })
+        .then(res => res.json())
+        .then(async data => {
+            const res = data.data
+            if (sideContent.dataset.id != res.c_id) return
+            chatInp.value = ""
+            chatInp.focus()
+            const html = `
+                <div title="${res.created_at}" class="conversation-item ${res.sender == userId ? "author" : ""}">
+                    ${res.content}
+                </div>
+            `
+            sideContent.innerHTML += html
+            sideContent.scroll({
+                top: sideContent.scrollHeight,
+                behavior: 'smooth'
+            })
+        }).catch(err => {
+        console.log(err)
+    })
 }
 
 
