@@ -67,6 +67,7 @@ def get_last_mess_in_conv(c_id):
         return last_mess.content
     return ""
 
+
 def get_list_receiver(u_id):
     query_user = Conversation.query.filter(Conversation.user_1.__eq__(u_id) | Conversation.user_2.__eq__(u_id))
 
@@ -75,7 +76,8 @@ def get_list_receiver(u_id):
         obj = {}
         if q.user_1 == u_id:
             obj = get_user_by_id_json(q.user_2)
-        else: obj = get_user_by_id_json(q.user_1)
+        else:
+            obj = get_user_by_id_json(q.user_1)
         obj['c_id'] = q.id
         obj['last_mess'] = get_last_mess_in_conv(q.id)
         user_list.append(obj)
@@ -91,9 +93,11 @@ def get_conv_json(c_id, u_id):
         obj = get_user_by_id_json(conv.user_1)
     return obj
 
+
 def create_conv(user_1, user_2):
     check = Conversation.query.filter((Conversation.user_1.__eq__(user_1) & Conversation.user_2.__eq__(user_2))
-                                      | (Conversation.user_1.__eq__(user_2) & Conversation.user_2.__eq__(user_1))).first()
+                                      | (Conversation.user_1.__eq__(user_2) & Conversation.user_2.__eq__(
+        user_1))).first()
     if check is not None:
         return check
     conv = Conversation(user_1=user_1, user_2=user_2)
@@ -130,6 +134,24 @@ def get_mess_conv_json(c_id):
         data.append(obj)
     return data
 
+
+def create_message(c_id, s_id, r_id, content):
+    message = Message(conversation_id=c_id, sender=s_id, receiver=r_id, content=content)
+    db.session.add(message)
+    db.session.commit()
+    return message
+
+
+def create_message_json(c_id, s_id, r_id, content):
+    message = create_message(c_id, s_id, r_id, content)
+    obj = {
+        'c_id': message.conversation_id,
+        'sender': message.sender,
+        'receiver': message.receiver,
+        'content': message.content,
+        'created_at': message.created_at
+    }
+    return obj
 
 
 if __name__ == '__main__':
