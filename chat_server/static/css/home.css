@@ -266,6 +266,7 @@
     width: fit-content;
     font-size: 1.6rem;
     max-width: 80%;
+    margin-left: 4px;
 }
 
 .conversation-item + .conversation-item {
@@ -274,14 +275,19 @@
 
 .conversation-item.author {
     margin-left: auto;
+    margin-right: 4px;
+}
+
+.main-right__notify {
+    font-size: 3rem;
+    text-align: center;
 }
 
 .main-right__chat {
     display: flex;
     width: 100%;
     margin-top: auto;
-    padding: 6xp 12px;
-    background: #ccc;
+    padding: 6px 12px;
     min-height: var(--chat-height);
 }
 

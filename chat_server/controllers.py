@@ -61,6 +61,14 @@ def add_conversation():
     }
 
 
+def get_mess_conv(c_id):
+    data = dao.get_mess_conv_json(c_id)
+    return {
+        "status": 200,
+        "data": data
+    }
+
+
 def logout():
     logout_user()
     return redirect('/auth')
