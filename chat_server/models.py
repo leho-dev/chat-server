@@ -38,7 +38,7 @@ class Message(BaseModel):
 
 if __name__ == '__main__':
     with app.app_context():
-        # db.create_all()
+        db.create_all()
 
         # a = User(fullname='Nguyễn Văn A')
         # b = User(fullname="Lê B")
