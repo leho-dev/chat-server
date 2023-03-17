@@ -8,6 +8,7 @@ app.add_url_rule('/callback', 'oauth_callback', controllers.oauth_callback)
 app.add_url_rule('/logout', 'logout', controllers.logout)
 
 app.add_url_rule('/', 'home', controllers.home, methods=['get', 'post'])
+app.add_url_rule('/verify', 'verify', controllers.verify, methods=['get', 'post'])
 
 app.add_url_rule("/search_user", 'search_user', controllers.search_user, methods=['post'])
 app.add_url_rule("/get_mess_conv/<int:c_id>", 'get_mess_conv', controllers.get_mess_conv, methods=['get'])
@@ -36,7 +37,6 @@ def handle_client_conn(data):
         'id': data['id'],
         'socketId': request.sid,
     })
-    print(listSocket)
 
 @socket.on("disconnect")
 def handle_disconnect():
@@ -47,8 +47,7 @@ def handle_disconnect():
 def handle_message(data):
     socket.emit("receive_message", data)
 
-
-
 if __name__ == '__main__':
-    socket.run(app, allow_unsafe_werkzeug=True, port=5001, debug=True, host='localhost')
+    # ssl_context = ('./ssl/cert.pem', './ssl/key.pem')
+    socket.run(app, allow_unsafe_werkzeug=True, port=5001, debug=True, host='0.0.0.0')
 

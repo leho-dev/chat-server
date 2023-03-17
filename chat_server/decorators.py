@@ -1,6 +1,8 @@
 from functools import wraps
 from flask_login import current_user
-from flask import redirect
+from flask import redirect, request
+
+from chat_server import dao
 
 
 def login_required(f):

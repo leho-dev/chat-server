@@ -50,7 +50,7 @@ const get_mess_conv_data = async (c_id) => {
             const htmls = res.map(r => {
                 return `
                     <div title="${r.created_at}" class="conversation-item ${r.sender == userId ? "author" : ""}">
-                        ${r.content}
+                        ${decodeCaesar(r.content, r.c_id)}
                     </div>
                 `
             }).join("")
@@ -211,7 +211,7 @@ chatMain.onsubmit = (e) => {
             c_id: sideContent.dataset.id,
             s_id: userId,
             r_id: receiver,
-            content: value
+            content: encodeCaesar(value, sideContent.dataset.id)
         })
     })
         .then(res => res.json())
@@ -222,7 +222,7 @@ chatMain.onsubmit = (e) => {
             chatInp.focus()
             const html = `
                 <div title="${res.created_at}" class="conversation-item ${res.sender == userId ? "author" : ""}">
-                    ${res.content}
+                    ${decodeCaesar(res.content, res.c_id)}
                 </div>
             `
             sideContent.innerHTML += html
@@ -240,7 +240,7 @@ socket.on("receive_message", data => {
     if (sideContent.dataset.id == data.c_id && data.receiver == userId) {
         const html = `
         <div title="${data.created_at}" class="conversation-item ${data.sender == userId ? "author" : ""}">
-            ${data.content}
+            ${decodeCaesar(data.content, data.c_id)}
         </div>
     `
         sideContent.innerHTML += html

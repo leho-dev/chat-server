@@ -1,0 +1,27 @@
+.group {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    gap: 30px;
+}
+
+.title {
+    font-size: 4rem;
+    text-align: center;
+}
+
+.inp {
+    padding:12px 20px;
+    border-radius: 6px;
+    outline: none;
+    border: none;
+    font-size: 3rem;
+    text-align: center;
+}
+
+button {
+    display: none;
+}
