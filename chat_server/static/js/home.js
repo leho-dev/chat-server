@@ -7,6 +7,56 @@ const chatInp = document.querySelector('.chat-input')
 
 let itemActiveSidebar = null
 
+// encode
+const encodeCaesar = (text, id) => {
+    const res = []
+    const key = id % 26
+    text.split("").forEach(i => {
+        if (i >= "a" && i <= "z" || i >= "A" && i <= "Z" || i >= "0" && i <= "9") {
+            let value = i.charCodeAt(0) + key
+            if (i >= "a" && i <= "z" && value > 'z'.charCodeAt(0) ||
+                i >= "A" && i <= "Z" && value > 'Z'.charCodeAt(0)) {
+                    value = value - 26
+            }
+
+            if (i >= "0" && i <= "9" && value > '9'.charCodeAt(0)) {
+                    while (value > '9'.charCodeAt(0)) {
+                        value = value - 10
+                    }
+            }
+            res.push(String.fromCharCode(value))
+        } else {
+            res.push(i)
+        }
+    })
+    return res.join("")
+}
+
+// decode
+const decodeCaesar = (text, id) => {
+    const res = []
+    const key = id % 26
+    text.split("").forEach(i => {
+        if (i >= "a" && i <= "z" || i >= "A" && i <= "Z" || i >= "0" && i <= "9") {
+            let value = i.charCodeAt(0) - key
+            if (i >= "a" && i <= "z" && value < 'a'.charCodeAt(0) ||
+                i >= "A" && i <= "Z" && value < 'A'.charCodeAt(0)) {
+                    value = value + 26
+            }
+
+            if (i >= "0" && i <= "9" && value < '0'.charCodeAt(0)) {
+                    while (value < '0'.charCodeAt(0)) {
+                        value = value + 10
+                    }
+            }
+            res.push(String.fromCharCode(value))
+        } else {
+            res.push(i)
+        }
+    })
+    return res.join("")
+}
+
 // get sidebar
 fetch(SERVER_URL + "/get_list_receiver/" + userId, {
     method: 'GET',
@@ -50,7 +100,7 @@ const get_mess_conv_data = async (c_id) => {
             const htmls = res.map(r => {
                 return `
                     <div title="${r.created_at}" class="conversation-item ${r.sender == userId ? "author" : ""}">
-                        ${r.content}
+                        ${decodeCaesar(r.content, r.c_id)}
                     </div>
                 `
             }).join("")
@@ -211,7 +261,7 @@ chatMain.onsubmit = (e) => {
             c_id: sideContent.dataset.id,
             s_id: userId,
             r_id: receiver,
-            content: value
+            content: encodeCaesar(value, sideContent.dataset.id)
         })
     })
         .then(res => res.json())
@@ -222,7 +272,7 @@ chatMain.onsubmit = (e) => {
             chatInp.focus()
             const html = `
                 <div title="${res.created_at}" class="conversation-item ${res.sender == userId ? "author" : ""}">
-                    ${res.content}
+                    ${decodeCaesar(res.content, res.c_id)}
                 </div>
             `
             sideContent.innerHTML += html
@@ -240,7 +290,7 @@ socket.on("receive_message", data => {
     if (sideContent.dataset.id == data.c_id && data.receiver == userId) {
         const html = `
         <div title="${data.created_at}" class="conversation-item ${data.sender == userId ? "author" : ""}">
-            ${data.content}
+            ${decodeCaesar(data.content, data.c_id)}
         </div>
     `
         sideContent.innerHTML += html

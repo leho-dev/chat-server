@@ -7,7 +7,8 @@ import google.auth.transport.requests
 from google.oauth2 import id_token
 import os
 from dotenv import load_dotenv
-from sqlalchemy import func, desc, asc, extract, and_, distinct
+from sqlalchemy import func, desc
+import re
 
 load_dotenv()
 
@@ -128,7 +129,7 @@ def get_mess_conv_json(c_id):
             'c_id': q.conversation_id,
             'sender': q.sender,
             'receiver': q.receiver,
-            'content': q.content,
+            'content': encode_caesar_message(q.content, q.conversation_id),
             'created_at': q.created_at
         }
         data.append(obj)
@@ -136,7 +137,7 @@ def get_mess_conv_json(c_id):
 
 
 def create_message(c_id, s_id, r_id, content):
-    message = Message(conversation_id=c_id, sender=s_id, receiver=r_id, content=content)
+    message = Message(conversation_id=c_id, sender=s_id, receiver=r_id, content=decode_caesar_message(content, c_id))
     db.session.add(message)
     db.session.commit()
     return message
@@ -148,12 +149,83 @@ def create_message_json(c_id, s_id, r_id, content):
         'c_id': message.conversation_id,
         'sender': message.sender,
         'receiver': message.receiver,
-        'content': message.content,
+        'content': encode_caesar_message(message.content, c_id),
         'created_at': message.created_at
     }
     return obj
 
+def decode_caesar_message(mess, c_id):
+    message = ""
+    key = int(c_id) % 26
+    pattern = re.compile("[A-Za-z0-9]")
+    pattern_az = re.compile("[a-z]")
+    pattern_AZ = re.compile("[A-Z]")
+    pattern_09 = re.compile("[0-9]")
+    for i in range(len(mess)):
+        if pattern.match(mess[i]):
+            text = ""
+            ascii_code = ord(mess[i])
+
+            if pattern_az.match(mess[i]):
+                value = ord(mess[i]) - key
+                text = chr(value)
+                if value < ord('a'):
+                    text = chr(value + 26)
+
+            if pattern_AZ.match(mess[i]):
+                value = ord(mess[i]) - key
+                text = chr(value)
+                if value < ord('A'):
+                    text = chr(value + 26)
+
+            if pattern_09.match(mess[i]):
+                value = ord(mess[i]) - key
+                text = chr(value)
+                while value < ord('0'):
+                    value = value + 10
+                text = chr(value)
+
+            message += text
+        else:
+            message += mess[i]
+    return message
+
+def encode_caesar_message(mess, c_id):
+    message = ""
+    key = int(c_id) % 26
+    pattern = re.compile("[A-Za-z0-9]")
+    pattern_az = re.compile("[a-z]")
+    pattern_AZ = re.compile("[A-Z]")
+    pattern_09 = re.compile("[0-9]")
+    for i in range(len(mess)):
+        if pattern.match(mess[i]):
+            text = ""
+            ascii_code = ord(mess[i])
+
+            if pattern_az.match(mess[i]):
+                value = ord(mess[i]) + key
+                text = chr(value)
+                if value > ord('z'):
+                    text = chr(value - 26)
+
+            if pattern_AZ.match(mess[i]):
+                value = ord(mess[i]) + key
+                text = chr(value)
+                if value > ord('Z'):
+                    text = chr(value - 26)
+
+            if pattern_09.match(mess[i]):
+                value = ord(mess[i]) + key
+                text = chr(value)
+                while value > ord('9'):
+                    value = value - 10
+                text = chr(value)
+
+            message += text
+        else:
+            message += mess[i]
+    return message
 
 if __name__ == '__main__':
     with app.app_context():
-        print(get_mess_conv_json(1))
+        print(decode_caesar_message('diàp cạo uôj mà Mê Iồ 18800865295 =)))', 1))

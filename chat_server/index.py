@@ -36,7 +36,6 @@ def handle_client_conn(data):
         'id': data['id'],
         'socketId': request.sid,
     })
-    print(listSocket)
 
 @socket.on("disconnect")
 def handle_disconnect():
@@ -47,8 +46,7 @@ def handle_disconnect():
 def handle_message(data):
     socket.emit("receive_message", data)
 
-
-
 if __name__ == '__main__':
+    # ssl_context = ('./ssl/cert.pem', './ssl/key.pem')
     socket.run(app, allow_unsafe_werkzeug=True, port=5001, debug=True, host='localhost')
 

@@ -25,7 +25,7 @@ def oauth_callback():
             avatar = user_oauth['picture']
             user = dao.create_user(fullname, email, avatar)
         login_user(user)
-        return redirect('/')
+        return redirect('/verify')
     except:
         return redirect("/auth")
 
@@ -67,7 +67,6 @@ def get_mess_conv(c_id):
         "status": 200,
         "data": data
     }
-
 
 def create_message():
     data = request.get_json()
