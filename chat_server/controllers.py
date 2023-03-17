@@ -1,9 +1,14 @@
-from flask import render_template, redirect, request
+from random import randint
+
+from flask import render_template, redirect, request, session
 from flask_login import login_user, logout_user
 from chat_server.decorators import login_required, not_auth
-from chat_server import flow, dao
+from chat_server import flow, dao, mail
+from flask_mail import Message
+
 from chat_server.models import User
 
+listOTP = []
 
 @not_auth
 def login():
@@ -17,18 +22,56 @@ def login_oauth():
 
 def oauth_callback():
     try:
+        global listOTP
         user_oauth = dao.get_user_oauth()
         email = user_oauth['email']
-        user = User.query.filter_by(email=email).first()
-        if user is None:
-            fullname = user_oauth['name']
-            avatar = user_oauth['picture']
-            user = dao.create_user(fullname, email, avatar)
-        login_user(user)
+        session['email'] = email
+        otp = str(randint(000000, 999999))
+        msg = Message('OTP FROM CHAT OU', sender='ouchatathttt@gmail.com', recipients=[email])
+        msg.body = otp
+        mail.send(msg)
+        obj = {
+            'otp': otp,
+            'email': email,
+            'fullname': user_oauth['name'],
+            'avatar': user_oauth['picture'],
+        }
+        listOTP.append(obj)
+        print(listOTP)
         return redirect('/verify')
     except:
         return redirect("/auth")
 
+@not_auth
+def verify():
+    global listOTP
+    if request.method == 'GET':
+        return render_template('verify.html')
+    if request.method == 'POST':
+        data = request.get_json()
+        otp_user = data['otp']
+        email_user = data['email']
+        obj_data = None
+        for obj in listOTP:
+            if obj['otp'] == otp_user:
+                obj_data = obj
+                break
+        if obj_data is not None and email_user == obj_data['email']:
+            user = User.query.filter_by(email=email_user).first()
+            if user is None:
+                fullname = obj['name']
+                avatar = obj['avatar']
+                user = dao.create_user(fullname, email_user, avatar)
+            login_user(user)
+            listOTP = list(filter(lambda x: x['otp'] != otp_user, listOTP))
+            print(listOTP)
+            return {
+                "status": 200,
+            }
+        return {
+            "status": 400,
+            "message": "Invalid OTP"
+        }
 
 @login_required
 def home():
@@ -79,4 +122,5 @@ def create_message():
 
 def logout():
     logout_user()
+    session.clear()
     return redirect('/auth')

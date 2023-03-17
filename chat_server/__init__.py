@@ -10,6 +10,8 @@ from flask_moment import Moment
 from google_auth_oauthlib.flow import Flow
 from dotenv import load_dotenv
 from flask_socketio import SocketIO
+from flask_mail import Mail, Message
+from random import *
 
 
 load_dotenv()
@@ -28,6 +30,13 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:%s@localhost/%s?ch
                                         % (quote(os.getenv('PW_DB')), os.getenv('NAME_DB'))
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
+app.config['MAIL_SERVER'] ='smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USERNAME'] = 'ouchatathttt@gmail.com'
+app.config['MAIL_PASSWORD'] = 'fuhylrnmpjeomodx'
+app.config['MAIL_USE_TLS'] = True
+
+mail = Mail(app)
 
 db = SQLAlchemy(app=app)
 
