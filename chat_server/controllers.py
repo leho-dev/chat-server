@@ -1,11 +1,9 @@
 from random import randint
-
 from flask import render_template, redirect, request, session
 from flask_login import login_user, logout_user
 from chat_server.decorators import login_required, not_auth
 from chat_server import flow, dao, mail
 from flask_mail import Message
-
 from chat_server.models import User
 
 listOTP = []
@@ -24,6 +22,7 @@ def oauth_callback():
     try:
         global listOTP
         user_oauth = dao.get_user_oauth()
+        print(user_oauth)
         email = user_oauth['email']
         session['email'] = email
         otp = str(randint(000000, 999999))
@@ -59,8 +58,8 @@ def verify():
         if obj_data is not None and email_user == obj_data['email']:
             user = User.query.filter_by(email=email_user).first()
             if user is None:
-                fullname = obj['name']
-                avatar = obj['avatar']
+                fullname = obj_data['fullname']
+                avatar = obj_data['avatar']
                 user = dao.create_user(fullname, email_user, avatar)
             login_user(user)
             listOTP = list(filter(lambda x: x['otp'] != otp_user, listOTP))
