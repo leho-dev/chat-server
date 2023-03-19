@@ -49,5 +49,5 @@ def handle_message(data):
 
 if __name__ == '__main__':
     # ssl_context = ('./ssl/cert.pem', './ssl/key.pem')
-    socket.run(app, allow_unsafe_werkzeug=True, port=5001, debug=True, host='0.0.0.0')
+    socket.run(app, allow_unsafe_werkzeug=True, port=5001, debug=True, host="localhost")
 

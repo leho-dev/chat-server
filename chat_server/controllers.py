@@ -27,7 +27,7 @@ def oauth_callback():
         email = user_oauth['email']
         session['email'] = email
         otp = str(randint(000000, 999999))
-        msg = Message('OTP FROM CHAT OU', sender='ouchatathttt@gmail.com', recipients=[email])
+        msg = Message('OTP FROM CHAT OU', sender='cloneg2001@gmail.com', recipients=[email])
         msg.body = otp
         mail.send(msg)
         obj = {
