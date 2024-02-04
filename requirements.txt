@@ -42,7 +42,7 @@ PyMySQL==1.0.2
 pyparsing==3.0.9
 python-dotenv==1.0.0
 python-engineio==4.3.4
-python-jwt==2.0.1
+python-jwt==3.3.4
 python-socketio==5.7.2
 pytz==2022.7.1
 requests==2.28.2
